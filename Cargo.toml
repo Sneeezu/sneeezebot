@@ -1,0 +1,18 @@
+[package]
+name = "sneeezebot"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+dirs = "5.0.0"
+rand = "0.8.5"
+psutil = "3.2.2"
+
+toml = "0.7.3"
+serde = { version = "1.0.158", features = ["derive"] }
+
+twitch-irc = "5.0.0"
+tokio = { version = "1.26.0", features = ["full"] }
+async-trait = "0.1.68"
