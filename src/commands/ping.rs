@@ -16,7 +16,10 @@ impl Ping {
     pub fn new() -> Self {
         Self {
             start_time: Instant::now(),
-            process: Process::new(process::id()).expect("Failed to get current process"),
+            process: Process::new(process::id()).unwrap_or_else(|e| {
+                eprintln!("Failed to create new process: {e}");
+                process::exit(1);
+            }),
         }
     }
 }
@@ -37,13 +40,13 @@ impl Command for Ping {
         let memory = self
             .process
             .memory_info()
-            .map(|m| format!("{:.0}", utils::bytes_to_mb(m.rss())))
+            .map(|m| format!("{:.0}mb", utils::bytes_to_mb(m.rss())))
             .unwrap_or_else(|e| format!("{e}"));
 
         client
             .say(
                 msg.channel_login,
-                format!("forsen uptime: {} ⦁ mem: {}mb", uptime, memory),
+                format!("forsen uptime: {} ⦁ mem: {}", uptime, memory),
             )
             .await?;
 
