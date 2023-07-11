@@ -169,8 +169,14 @@ impl Handler {
                             continue;
                         }
 
-                        self.handle_command(msg.clone()).await.unwrap();
-                        self.handle_noncommands(msg.clone()).await.unwrap();
+                        // TODO: better logging?
+                        if let Err(e) = self.handle_command(msg.clone()).await {
+                            eprintln!("Error happened while handling command: {e}")
+                        };
+
+                        if let Err(e) = self.handle_noncommands(msg.clone()).await {
+                            eprintln!("Error happened while handling non-command: {e}")
+                        };
                     }
 
                     _ => (),
